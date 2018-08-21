@@ -1,0 +1,15 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")
+package ${PACKAGE_NAME};
+#end
+
+import ${BASE_PACKAGE_NAME}.contract.base.IBaseView;
+import ${BASE_PACKAGE_NAME}.presenter.base.IBasePresenter;
+
+public interface ${NAME}Contract {
+
+    interface View extends IBaseView<${NAME}Contract.Presenter> {
+    }
+
+    interface Presenter extends IBasePresenter<${NAME}Contract.View> {
+    }
+}

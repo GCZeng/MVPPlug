@@ -1,0 +1,44 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")
+package ${PACKAGE_NAME};
+#end
+
+import ${BASE_PACKAGE_NAME}.R;
+import ${BASE_PACKAGE_NAME}.contract.${NAME}Contract;
+import ${BASE_PACKAGE_NAME}.presenter.${NAME}Presenter;
+import ${BASE_PACKAGE_NAME}.ui.activity.base.BaseDiActivity;
+import ${BASE_PACKAGE_NAME}.widget.TitleView;
+
+import javax.inject.Inject;
+import butterknife.BindView;
+
+public class ${NAME}Activity extends BaseDiActivity implements ${NAME}Contract.View {
+    @BindView(R.id.titleView)
+    TitleView titleView;
+
+    @Inject
+        ${NAME}Presenter m${NAME}Presenter;
+
+
+    @Override
+    protected int provideContentViewId() {
+        return R.layout.activity${LAYOUT_NAME};
+    }
+
+    @Override
+    protected void initView() {
+        m${NAME}Presenter.attatchView(this, this);
+        titleView.setLeftClick(v -> finish());
+    }
+
+    @Override
+    public void initData(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        m${NAME}Presenter.detachView();
+    }
+
+}

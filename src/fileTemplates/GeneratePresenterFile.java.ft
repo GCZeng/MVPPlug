@@ -1,0 +1,16 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")
+package ${PACKAGE_NAME};
+#end
+
+import ${BASE_PACKAGE_NAME}.contract.TestContract;
+import ${BASE_PACKAGE_NAME}.presenter.base.BasePresenter;
+
+import javax.inject.Inject;
+
+public class ${NAME}Presenter extends BasePresenter<${NAME}Contract.View> implements ${NAME}Contract.Presenter {
+
+    @Inject
+    public ${NAME}Presenter() {
+
+    }
+}
