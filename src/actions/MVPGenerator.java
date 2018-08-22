@@ -36,7 +36,7 @@ public class MVPGenerator extends AnAction implements MVPHandler.OnGenerateListe
     public void actionPerformed(AnActionEvent anActionEvent) {
         this.actionEvent = anActionEvent;
         mvpHandler = new MVPHandler();
-        mvpHandler.setTitle("输入名称-生成MVP相关类");
+        mvpHandler.setTitle("Create MVP");
         mvpHandler.setOnGenerateListener(this);
         mvpHandler.pack();
         //设置对话框跟随当前windows窗口
@@ -70,7 +70,48 @@ public class MVPGenerator extends AnAction implements MVPHandler.OnGenerateListe
         createFile(text, directoryService, project, contractDir, ACTIVITY_NAME, ACTIVITY_FILE_NAME, ACTIVITY_TEMPLATES_NAME);
 
         //创建布局文件
+        VirtualFile baseFile = project.getBaseDir();
+        VirtualFile[] childFiles = baseFile.getChildren();
+        VirtualFile virtualFile = getOutputPath(childFiles);
+        virtualFile = virtualFile.findChild("layout");
 
+        String layoutName = "activity" + map.get("LAYOUT_NAME") + ".xml";
+
+        if (virtualFile.findChild(layoutName) == null) {
+            try {
+                virtualFile = virtualFile.createChildData(null, layoutName);
+                String xmlStr = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+                        "<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n" +
+                        "    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n" +
+                        "    style=\"@style/ll_m_m_v\">\n\n" +
+                        "    <" + map.get("BASE_PACKAGE_NAME") + ".TitleView\n" +
+                        "        android:id=\"@+id/titleView\"\n" +
+                        "        android:style=\"@style/BaseTitleStyle\"\n" +
+                        "        />\n</LinearLayout>";
+                virtualFile.setBinaryContent(xmlStr.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+    private VirtualFile getOutputPath(VirtualFile[] virtualFiles) {
+        for (VirtualFile virtualFile : virtualFiles) {
+            String name = virtualFile.getName();
+            VirtualFile[] childVirtualFile = virtualFile.getChildren();
+
+            if (name.equals("res")) {
+                return virtualFile;
+            } else if (childVirtualFile.length > 0) {
+                VirtualFile resPath = getOutputPath(childVirtualFile);
+                if (resPath != null) {
+                    return resPath;
+                }
+            }
+        }
+        return null;
     }
 
 

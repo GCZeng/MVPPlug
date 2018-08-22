@@ -46,16 +46,22 @@ public class AndroidUtils {
         int sIndex = 0;
         boolean flag = true;
         for (int i = 1; i < name.length(); i++) {
-            if (name.charAt(i) >= 'A' && name.charAt(i) <= 'Z') {
+            if ((name.charAt(i) >= 'A' && name.charAt(i) <= 'Z')) {
                 sb.append("_");
                 sb.append(name.substring(sIndex, i).toLowerCase());
                 sIndex = i;
-                flag=false;
+                flag = false;
+            } else if (i == name.length() - 1) {
+                sb.append("_");
+                sb.append(name.substring(sIndex, i + 1).toLowerCase());
+                sIndex = i;
+                flag = false;
             }
         }
-        if(flag){
-            sb.append(name.toLowerCase());
-        }
+//        if (flag) {
+//            sb.append("_");
+//            sb.append(name.toLowerCase());
+//        }
 
         return sb.toString();
     }
